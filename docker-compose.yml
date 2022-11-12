@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+
+  db.postgres:
+    image: postgres:14.6
+    volumes:
+      - ./local_data/postgres/data:/postgres/data
+    ports:
+      - 5432:5432
+    environment:
+      PGDATA: postgres/data  # This is required for local data volume
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: app
+      SQLALCHEMY_ECHO: "debug"
+      LANGUAGE: "en_US.UTF-8"
+      LANG: "en_US.UTF-8"
+      LC_ALL: "en_US.UTF-8"
+      DB_DEBUG: "True"
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr", "-c", "log_connections=ON"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d app -U docker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
