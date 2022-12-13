@@ -1,5 +1,15 @@
-from app.database.models import Dog
+from app.database.models import Dog, Toy
 from app.database.session import get_session
+
+
+def add_toy(dog):
+    toy = Toy(
+        name=name,
+        dog=dog
+    )
+    with get_session() as session:
+        session.add(Toy)
+        session.commit()
 
 
 def add_dog(name, date_of_birth, height, weight):
@@ -23,4 +33,4 @@ def get_all_dogs():
 def get_dog(name):
     with get_session() as session:
         dog = session.query(Dog).filter(Dog.name == name).one()
-    return dog.name
+    return dog
